@@ -1,0 +1,5 @@
+esp32_tutorial_project/
+Espressif/
+blink/build
+hello_world/build
+uart_events/build

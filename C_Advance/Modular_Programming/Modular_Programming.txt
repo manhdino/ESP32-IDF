@@ -1,0 +1,151 @@
+1.Prototypes:
++ Đặt vấn đề:
+ Cho đến lúc này, các bạn cũng chỉ làm việc trên một file duy nhất tên là "main.c"
+Điều này có thể tạm chấp nhận trong giai đoạn hiện tại vì chương trình của chúng ta vẫn còn khá
+ngắn, nhưng sắp tới chương trình của chúng ta sẽ chứa hàng chục, thậm chí hàng trăm functions,
+nếu bạn đặt tất cả chúng trong cùng một file thì sẽ rất dài !
+   --> Giải pháp khai báo Prototypes
+   --> VD: xem file Prototypes.c 
+
++ Một prototype thật ra là lời chỉ dẫn cho máy tính. Nó sẽ thông báo với máy tính có sự tồn tại của
+function (dientichHinhChuNhat) với những tham số (parameters) cần đưa vào và type giá trị sẽ
+xuất ra. Nhờ vậy mà máy tính có thể tự sắp xếp.
++ Và cũng nhờ vào dòng code này, bạn không còn đau đầu khi chọn vị trí đặt function nữa.
+Hãy luôn viết prototypes của các functions có trong chương trình. Chương trình của bạn sẽ
+không hề bị chậm hơn khi sử dụng nhiều function đâu: và bạn nên tập một thói quen tốt kể từ
+bây giờ, hãy đặt prototype cho mỗi functions bạn viết.
+Chắc bạn cũng thấy function main không có prototype. Và đây cũng là function duy nhất không
+cần prototype, bởi vì máy tính đã biết rõ nó là gì rồi (tất cả các chương trình đều dùng đến mà,
+nó bắt buộc phải biết thôi)
+
++ Để cho chính xác hơn, bạn cần biết thêm: dòng code prototype không cần thiết
+phải viết lại tên của các biến số cần cho parameter. Máy tính chỉ cần biết type của
+các biến số đó thôi.
+   --> Rút gọn: double dientichHinhChuNhat (double , double);
+
++ Cách sử dụng nhiều files trong cùng một project:
+ --> Trong thực tế, chương trình sẽ không được viết hết toàn bộ trong mỗi file main.c
+Chắc chắn là chúng ta cũng có thể làm vậy nhưng việc mò mẫm trong một file chứa 10000 dòng
+code thật sự không thiết thực chút nào. Chính vì vậy, thông thường, một project sẽ được tạo
+bởi nhiều files
+
++ ó 2 loại file khác nhau:
+  + những file .h: gọi là file headers. Những file này chứa prototype của các functions.
+  +  những file .c: là những file source. Những file này chứa nội dung của các functions.
+
++ Bình thường, người ta rất ít khi để những prototypes trong các file .c giống như trên chúng ta
+đã làm trong file main.c (chỉ trừ khi chương trình đó quá nhỏ).
+
++ Mỗi file .c tương ứng với một file .h trong đó chứa những prototype của những functions
+
++ Include file .h vào file .c  --> include "game.h"
+
++ Ngoặc nhọn < > để thêm vào một file thư viện tìm thấy trong folder của IDE
++  Ngoặc kép " " để thêm vào một file tìm thấy trong folder project của bạn ( bên cạnh
+những file .c)
+
++ Quá trình biên dịch file:
+   + Preprocessor: đọc những file .h chứa trong file .c,tức là đọc những preprocessor bắt đầu
+bằng #.VD: #include: cho phép thêm file khác vào file hiện tại,sẽ thay thế dòng #include bằng những
+file chỉ định, đặt nội dung file .h vào file .c,lúc này file .c đã được hoàn chỉnh
+   + Compilation: biên dịch file .c sang hệ nhị phân mà máy tính có thể hiểu được
+      --> biên dịch file .c --> file .o hoặc .obj
+   + Link editor(linker): Liên kết những file .o lại và gửi chúng vào file .exe
+     --> Preprocessor --> Compilation --> Linker
+   + Còn các file thư viện .a(được chứa trong thư viện stdio,..) thì sẽ thêm vào trong 
+   quá trình Linker để tạo ra file .exe
+      --> VD: hàm printf() sẽ chứa trong file .a
+
+
+
+2. Scope của function và biến số:
+  + Đặt vấn đề: Trước khi kết thúc bài hướng dẫn, chúng ta sẽ tìm hiểu khái niệm về phạm vi sử dụng của
+functions và biến số. Chúng ta sẽ xem khi nào những biến số và function có thể sử dụng, có
+nghĩa là chúng ta có thể gọi được chúng. 
+  + Các biến trong function: Khi bạn khai báo một biến số trong một function, nó sẽ bị xóa khi function kết thúc
+     --> biến cục bộ 
+  + Biến toàn cục: Biến dùng chung cho tất cả functions
+
+  + Biến số global mà chúng ta vừa thấy sử dụng được cho tất cả các file trong project.
+Chúng ta có thể tạo ra những biến số dùng riêng cho file chứa nó. Biến số này có thể được sử
+dụng cho các functions xuất hiện trong file đó, không dùng được chung cho tất cả các functions
+có trong chương trình. --> chính là static variable
+
+ + Biến static: Trong một function, nếu bạn thêm từ khóa static trước dòng
+khai báo biến số, biến số đó sẽ không bị xóa đi khi function kết thúc, giá trị của biến số đó vẫn
+được giữ lại. Và lần gọi function sau, biến số sẽ giữ lại giá trị đó. Có sự khác biệt với những
+biến số global.
+
+
++ Các local functions dùng riêng cho một file
+Để kết thúc phần này, tôi sẽ chỉ bạn về phạm vi sử dụng của các functions.
+Bình thường, khi bạn tạo một function, nó sẽ được dùng chung cho toàn bộ chương trình. Nghĩa
+là nó cũng có thể được sử dụng cho bất kì file .c nào khác.
+Nhưng nếu bạn cần tạo một function chỉ dùng riêng cho mỗi file chứa nó. Bạn chỉ cần thêm vào
+từ khóa static trước function đó.
+   --> static function chỉ có thể gọi bởi một function khác nằm chung trong file chứa nó.
+Nếu bạn thử gọi static function bởi một function khác chứa trong file khác, sẽ không hoạt động.
+
++ Tóm tắt:
+ + Tóm tắt lại những phạm vi sử dụng có thể có của các biến số:
+    +  Một biến số khai báo trong một function sẽ bị xóa đi khi function kết thúc, nó chỉ được
+sử dụng riêng cho function này.
+    +  Một biến số khai báo trong một function với từ khóa static ở phía trước sẽ không bị xóa
+khi function kết thúc, nó sẽ lưu lại giá trị và cập nhật dọc theo chương trình.
+    +  Một biến số khai báo bên ngoài các functions là một biến số global, có thể sử dụng cho
+tất cả các functions của tất cả các file source có trong project.
+    +  Một biến số global với từ khóa static ở phía trước là biến số global chỉ được sử dụng
+riêng cho file chứa nó, không dùng được bởi các function viết ở các file khác.
+
++ Tương tự, đây là các phạm vi sử dụng có thể có của các function:
+    +  Một function mặc định có thể sử dụng chung cho tất cả các files trong project, nó có
+thể gọi ra từ bất cứ vị trí nào trong các file khác.
+    +  Nếu ta muốn một function dùng riêng cho mỗi file chứa nó, bắt buộc phải thêm vào từ
+khóa static ở phía trước
+
+
+
+3. Pointer:
+  + Khi bạn gửi giá trị của một biến số vào vị trí parameter của một function, một bản sao của biến
+số này được tạo ra.
+  + Nhưng sau đó, function kết thúc khi dấu ngoặc "}" đóng lại. Như ta đã học ở bài học trước, tất cả
+những biến số tạo ra trong một function sẽ bị xóa đi khi function đó kết thúc
+  + Địa chỉ trong bộ nhớ:
+    + Bộ nhớ RAM
+    + Mỗi địa chỉ chỉ có thể chứa 1 số và chỉ chứa những số thôi, không thể chứa chữ cái hay 
+    đoạn văn vì nó sẽ tương tự trong bảng mã ASCII
+    + int tuoi = 10; // tuoi sẽ chuyển thành địa chỉ và giá trị lưu trong địa chỉ đó là 10
+  + printf địa chỉ của 1 biến số:
+     printf ("Dia chi cua bien so tuoi la %p", &tuoi);
+  + tuoi: tượng trưng cho giá trị của biến số. &tuoi: tượng trưng cho địa chỉ của biến số.
+
+  + Đến bây giờ, bạn chỉ có thể tạo biến số để chứa các số hạng. Và sau đây chúng ta sẽ học cách tạo
+ra những biến số chứa địa chỉ của chúng, những biến số này gọi là con trỏ.
+  
+  + int *pointer = NULL; //Bạn đã khởi tạo một con trỏ giá trị NULL. Như vậy, bạn chắc rằng con trỏ của bạn không chứa
+địa chỉ nào.
+  + Đoạn mã trên sẽ đặt trước một chỗ trong bộ nhớ, giống như cách
+bạn tạo ra một biến số thông thường. Nhưng điều thay đổi ở đây là giá trị của con trỏ chỉ dùng để
+chứa địa chỉ của một biến số khác.
+
+  + int tuoi = 10;
+    int *pointerTuoi = &tuoi;
+Dòng thứ nhất : "Tạo một biến số type int có giá trị là 10".
+Dòng thứ hai : "Tạo một con trỏ có giá trị là địa chỉ của biến số tuoi".
+
+  + Tóm lại:
+     +  Đối với một biến số, lấy ví dụ biến số tuoi:
+       + tuoi có nghĩa là: "Tôi muốn giá trị của biến số tuoi",
+       + &tuoi có nghĩa là: "Tôi muốn địa chỉ để tìm thấy biến số tuoi";
+     + Đối với một con trỏ, lấy ví dụ con trỏ pointerTuoi:
+       +  pointerTuoi có nghĩa là: "Tôi muốn giá trị của con trỏ pointerTuoi" (giá trị này là
+địa chỉ của một biến),
+       +  *pointerTuoi có nghĩa là: "Tôi muốn giá trị của biến số mà con trỏ pointerTuoi
+chỉ vào
+
++ Cách sử dụng con trỏ trong một function
+Điều khá thú vị ở con trỏ là chúng ta có thể sử dụng chúng trong các function để có thể thay đổi
+trực tiếp giá trị của biến số trong bộ nhớ chứ không phải một bản sao như bạn đã thấy ở đoạn đầu
+bài học.
+     
+     
