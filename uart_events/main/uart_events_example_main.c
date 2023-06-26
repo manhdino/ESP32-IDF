@@ -13,6 +13,7 @@
 #include "freertos/queue.h"
 #include "driver/uart.h"
 #include "esp_log.h"
+#include "output_iot.h"
 
 static const char *TAG = "uart_events";
 
@@ -27,7 +28,7 @@ static void uart_event_task(void *pvParameters)
 {
     uart_event_t event;
     size_t buffered_size;
-    uint8_t* dtmp = (uint8_t*) malloc(RD_BUF_SIZE);
+    uint8_t* dtmp = (uint8_t*) malloc(BUF_SIZE);
     for(;;) {
         //Waiting for UART event.
         if(xQueueReceive(uart0_queue, (void * )&event, (portTickType)portMAX_DELAY)) {
@@ -35,8 +36,12 @@ static void uart_event_task(void *pvParameters)
             switch(event.type) {
                 case UART_DATA:
                      uart_read_bytes(EX_UART_NUM, dtmp, event.size, portMAX_DELAY);
-                     ESP_LOGI(TAG, "Received from UART: %s", dtmp);
-                    uart_write_bytes(EX_UART_NUM, (const char*) dtmp, event.size);
+                     if(strstr(dtmp, "ON")){
+                        output_io_set_level(2,1);
+                     }
+                     if(strstr(dtmp, "OFF")){
+                        output_io_set_level(2,0);
+                     }
                     break;
                 case UART_FIFO_OVF:
                     ESP_LOGI(TAG, "hw fifo overflow");
@@ -76,7 +81,7 @@ static void uart_event_task(void *pvParameters)
 void app_main(void)
 {
     esp_log_level_set(TAG, ESP_LOG_INFO);
-
+    output_io_create(2);
     /* Configure parameters of an UART driver,
      * communication pins and install the driver */
     uart_config_t uart_config = {
